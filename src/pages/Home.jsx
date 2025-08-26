@@ -2,6 +2,8 @@ import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { listCountries } from "../lib/api";
 import styles from "../styles/Home.module.css";
+import { useFavorites } from "../hooks/useFavorites";
+
 
 function Home() {
   const [status, setStatus] = useState("idle"); // "idle" | "loading" | "success" | "error"
@@ -19,6 +21,8 @@ function Home() {
     }, 300);
     return () => clearTimeout(t);
   }, [query]);
+
+  const { has, toggle } = useFavorites();
 
   // Derive filtered list
   const filtered = useMemo(() => {
@@ -120,6 +124,18 @@ function Home() {
                 className={styles.card}
                 aria-label={`View details for ${name}`}
               >
+                <button
+                  className={styles.favBtn}
+                  aria-pressed={has(code)}
+                  aria-label={has(code) ? `Remove ${name} from favorites` : `Add ${name} to favorites`}
+                  onClick={(e) => {
+                    e.preventDefault();       // don't follow the link
+                    e.stopPropagation();      // don't bubble
+                    toggle(code);
+                  }}
+                >
+                  {has(code) ? "♥" : "♡"}
+                </button>
                 {flag && (
                   <img
                     className={styles.flag}
