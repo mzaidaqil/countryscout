@@ -1,5 +1,11 @@
 import React from "react";
 import styles from "./styles/App.module.css";
+import { Routes, Route, Link } from "react-router-dom";
+import Home from "./pages/Home";
+import Favorites from "./pages/Favorites";
+import CountryDetails from "./pages/CountryDetails";
+
+
 
 function App() {
   return (
@@ -8,20 +14,18 @@ function App() {
         <div className={styles.container}>
           <div className={styles.brand}>CountryScout</div>
           <nav className={styles.nav} aria-label="Primary">
-            {/* nav links will go here when we add routing */}
-            <a href="#">Home</a>
-            <a href="#">Favorites</a>
+            <Link to="/">Home</Link>
+            <Link to="/favorites">Favorites</Link>
           </nav>
         </div>
       </header>
 
       <main className={styles.main}>
-        <div className={styles.container}>
-          <section>
-            <h1>Explore countries</h1>
-            <p>Search, filter, and view details. Favorites persist locally.</p>
-          </section>
-        </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/country/:code" element={<CountryDetails />} />
+        </Routes>
       </main>
 
       <footer className={styles.footer}>
